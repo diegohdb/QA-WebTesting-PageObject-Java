@@ -2,7 +2,7 @@ package Tests;
 
 import Pages.BasePage;
 import Pages.RegisterPage;
-import Pages.WebTablePage;
+import Pages.TablePage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,14 +13,14 @@ public class TestRegister extends  BasePage{
     RegisterPage registerPage;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         BasePage.webConnection();
         registerPage = new RegisterPage();
         registerPage.visitRegisterPage();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         BasePage.closeBrowser();
     }
 
@@ -40,7 +40,7 @@ public class TestRegister extends  BasePage{
         registerPage.insertPassword("Tester123");
         //registerPage.uploadFile(ADD THE ABSOLUTE PATH TO resources/README2.md);
         registerPage.clickSubmit();
-        WebTablePage webtablePage = new WebTablePage();
+        TablePage webtablePage = new TablePage();
         Thread.sleep(4000);
         Assert.assertEquals("WebTable", webtablePage.getActive());
     }

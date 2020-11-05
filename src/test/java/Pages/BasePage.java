@@ -1,9 +1,6 @@
 package Pages;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -50,12 +47,28 @@ public class BasePage {
 
     public void SendText(By by_locator, String text){
         WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(by_locator)).clear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(by_locator)).sendKeys(text);
     }
 
     public void Click(By by_locator){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by_locator)).click();
+    }
+
+    public void DoubleClick(By by_locator){
+        Actions builder = new Actions(driver);
+        builder.doubleClick(GetElement(by_locator, 10)).build().perform();
+    }
+
+    public void RightClickSelect(By by_locator){
+        Actions builder = new Actions(driver);
+        builder.contextClick(GetElement(by_locator, 10)).build().perform();
+    }
+
+    public void AcceptAlert(){
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
     }
 
     public void HoverTo(By hoverElement){
@@ -66,8 +79,6 @@ public class BasePage {
     public void Select(By by_locator, String value){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         Select dropdown = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(by_locator)));
-//        dropdown.selectByVisibleText(value);
-//        dropdown.selectByIndex(1);
         dropdown.selectByValue(value);
     }
 
@@ -81,7 +92,6 @@ public class BasePage {
     public void SelectAutoComplete(By by_locator, By by_locator2, By by_locator3, String value){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         Click(by_locator);
-//        Select dropdown = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(by_locator)));
         SendText(by_locator2, value);
         Click(by_locator3);
     }
@@ -89,17 +99,5 @@ public class BasePage {
     public String GetValidationMessage(By by_locator){
         WebElement element = this.GetElement(by_locator, 10);
         return element.getAttribute("validationMessage");
-    }
-
-    public void DeleteByIndex(int index){
-        String locator = "/html/body/div[2]/div/ul/li["+index+"]/a";
-        By by_locator = By.xpath(locator);
-        Click(by_locator);
-    }
-
-    public void ClickProductByIndex(int index){
-        String locator = "/html/body/div[2]/div/ul/li["+index+"]/span/a";
-        By by_locator = By.xpath(locator);
-        Click(by_locator);
     }
 }
